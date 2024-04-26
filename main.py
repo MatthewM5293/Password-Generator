@@ -1,6 +1,6 @@
-def print_hi(name):
-    print(f'Hi, {name}')
+from Ui import UI
 
 
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    ui = UI()
+    ui.start_ui()

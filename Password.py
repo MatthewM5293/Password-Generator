@@ -1,3 +1,4 @@
+import datetime
 import random
 import string
 
@@ -23,48 +24,29 @@ Password Restrictions
 
 
 class Password:
-    def __init__(self, password_length=8, has_uppercase=True, has_numbers=True, has_special_character=True):
+    def __init__(self, phrase='', password_length=8, has_uppercase=True, has_numbers=True, has_special_character=True):
         self.__password = ''
-        self.__nickname = ''
+        self.__phrase = phrase
         self.__password_length = password_length
         self.__has_uppercase = has_uppercase
         self._has_number = has_numbers
         self.__has_special_character = has_special_character
+        self.__date_created = datetime.datetime.now()
 
-    def set_password(self, password):
-        self.__password = password
-
-    def set_nickname(self, nickname):
-        self.__nickname = nickname
-
-    def set_has_special_character(self, has_special_character):
-        self.__has_special_character = has_special_character
-
-    def set_has_uppercase(self, has_uppercase):
-        self.__has_uppercase = has_uppercase
-
-    def set_has_number(self, has_number):
-        self.__has_uppercase = has_number
+    def get_password(self):
+        return self.__password
 
     def generate_password(self):
+        characters_to_use = string.ascii_lowercase
         if self.__has_uppercase:
-            # generate password as normal using __password_length variable to make it dynamic
-            self.__password = ''.join(random.choices(string.ascii_lowercase + string.digits + string.ascii_uppercase,
-                                                     k=self.__password_length))
-            print(self.__password)
-            # make a random char in it upper case (future: will make a certain amount of chars uppercase)
-            # get random char in self.__password, make it uppercase
-            self.__password = ''.join(random.choices(string.ascii_lowercase + string.digits + string.ascii_uppercase,
-                                                     k=self.__password_length))
-            # check if has number, else replace a lowercase char with a special char
-            pass
+            characters_to_use += string.ascii_uppercase
         if self.__has_special_character:
-            # check if has special char, else replace a lowercase char with a special char (@ # $ % ^ & * - _ ! + = [] {} | \ : ’ , . ? / ` ~ ” () ;)
+            special_characters = "@#$%^&*-_!+=[]{}|\\:'\",.?/`~"
+            characters_to_use += special_characters
             pass
         if self._has_number:
-            self.__password = ''.join(random.choices(string.ascii_lowercase + string.digits + string.ascii_uppercase,
-                                                     k=self.__password_length))
-
-    def verify_custom_input(self, input_string):
-        # verify input with regex to make sure it complies with specifications above
-        pass
+            characters_to_use += string.digits
+        if self.__phrase != '':
+            characters_to_use += self.__phrase
+        self.__password = ''.join(random.choices(characters_to_use, k=self.__password_length, ))
+        return self.__password
